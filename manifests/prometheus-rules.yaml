@@ -977,7 +977,7 @@ spec:
           }}) is restarting {{ printf "%.2f" $value }} times / 5 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepodcrashlooping
       expr: |
-        rate(kube_pod_container_status_restarts_total{job="kube-state-metrics"}[5m]) * 60 * 5 > 0
+        rate(kube_pod_container_status_restarts_total{job="kube-state-metrics",container!="kubernetes-external-secrets"}[5m]) * 60 * 5 > 0
       for: 15m
       labels:
         severity: warning
@@ -1713,7 +1713,7 @@ spec:
         > 1
       for: 15m
       labels:
-        severity: critical
+        severity: warning
     - alert: PrometheusRemoteWriteBehind
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write
